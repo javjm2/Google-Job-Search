@@ -2,6 +2,7 @@ import os
 import time
 import re
 import pytest
+import selenium.common
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
@@ -56,7 +57,11 @@ def get_all_google_job_listing_names(job_count):
 
 
 def open_google_job_listings(job_search):
-    # driver.find_element(By.XPATH, '//div[text()="Reject all"]').click()
+    try:
+        driver.find_element(By.XPATH, '//div[text()="Reject all"]').click()
+    except selenium.common.NoSuchElementException:
+        pass
+
     search_field = driver.find_element(By.NAME, 'q')
     search_field.send_keys(job_search)
     # Sleep added since sending keys quickly adds a line break in the google search field
@@ -125,5 +130,5 @@ def test_google_search(job_search_terms):
             expand_full_descriptions(job_title)
             get_job_posting_link(job_title)
 
-    print(f'{len(JOB_LIST)} jobs found')
+    print(f'{len(JOB_LIST)} jobs found for the {job_search_terms} google search term')
 
