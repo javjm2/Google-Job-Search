@@ -56,7 +56,7 @@ def get_all_google_job_listing_names(job_count):
 
 
 def open_google_job_listings(job_search):
-    driver.find_element(By.XPATH, '//div[text()="Reject all"]').click()
+    # driver.find_element(By.XPATH, '//div[text()="Reject all"]').click()
     search_field = driver.find_element(By.NAME, 'q')
     search_field.send_keys(job_search)
     # Sleep added since sending keys quickly adds a line break in the google search field
