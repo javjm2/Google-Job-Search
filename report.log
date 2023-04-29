@@ -1,0 +1,7 @@
+2023-04-29 12:30:57,185  -  INFO  - looking for //div[text()="Reject all"] by xpath
+2023-04-29 12:30:57,204  -  INFO  - found //div[text()="Reject all"] by xpath
+2023-04-29 12:30:57,204  -  INFO  - before clicking <selenium.webdriver.remote.webelement.WebElement (session="687106221eea33921534935018883639", element="b9d31440-1acf-43f4-8f38-5de33b6ebeaf")>
+2023-04-29 12:30:57,257  -  INFO  - after clicking <selenium.webdriver.remote.webelement.WebElement (session="687106221eea33921534935018883639", element="b9d31440-1acf-43f4-8f38-5de33b6ebeaf")>
+2023-04-29 12:30:57,257  -  INFO  - looking for q by name
+2023-04-29 12:30:57,272  -  INFO  - found q by name
+2023-04-29 12:31:00,019  -  INFO  - before closing driver
