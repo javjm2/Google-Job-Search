@@ -123,3 +123,4 @@ def test_google_search(job_search_terms):
             get_job_posting_link(job_title)
 
     print(f'{len(JOB_LIST)} jobs found')
+
