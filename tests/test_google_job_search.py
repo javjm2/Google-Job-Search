@@ -25,7 +25,6 @@ def setup():
     chrome_options.add_argument("--disable-extensions")
     chrome_options.add_argument("--disable-gpu")
     chrome_options.add_argument("--no-sandbox")
-    breakpoint()
     driver = EventFiringWebDriver(webdriver.Chrome(ChromeDriverManager().install(), options=chrome_options),
                                   EventListener())
     driver.implicitly_wait(4)
