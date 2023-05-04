@@ -22,4 +22,4 @@ jobs:
       - name: Install Pytest
         run: pip install pytest
       - name: Run tests
-        run: pytest -s
+        run: pytest -s 'fseb cvjks'
