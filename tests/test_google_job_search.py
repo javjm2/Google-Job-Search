@@ -37,7 +37,11 @@ def setup():
 # Search terms to remember (100+ entries in general roles) - check for python when searching
 # senior automation tester remote jobs
 # software development engineer in test remote jobs
-@pytest.fixture(params=['senior automation tester remote jobs', 'senior automation tester remote jobs'])
+sdet = 'software development engineer in test remote uk jobs'
+senior_automation_tester = 'senior automation tester remote uk jobs'
+
+
+@pytest.fixture(params=[sdet])
 def job_search_terms(request):
     return request.param
 
@@ -131,4 +135,3 @@ def test_google_search(job_search_terms):
             get_job_posting_link(job_title)
 
     print(f'{len(JOB_LIST)} jobs found for the {job_search_terms} google search term')
-
