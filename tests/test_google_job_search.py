@@ -37,8 +37,10 @@ def setup():
 # Search terms to remember (100+ entries in general roles) - check for python when searching
 # senior automation tester remote jobs
 # software development engineer in test remote jobs
+# senior qa engineer jobs
 sdet = 'software development engineer in test remote uk jobs'
 senior_automation_tester = 'senior automation tester remote uk jobs'
+senior_qa_engineer = 'senior qa engineer jobs'
 
 
 @pytest.fixture(params=[sdet])
@@ -84,8 +86,8 @@ def open_google_job_listings(job_search):
 
 
 def expand_full_descriptions(job_title):
-    all_descriptions_buttons = driver.find_elements(By.XPATH,
-                                                    f'//div[text()="{job_title.text}"]/ancestor::div[@class]/descendant::g-inline-expansion-bar[@role="button"]')
+    # all_descriptions_buttons = driver.find_elements(By.XPATH, f'//div[text()="{job_title.text}"]/ancestor::div[@class]/descendant::g-inline-expansion-bar[@role="button"]')
+    all_descriptions_buttons = driver.find_elements(By.XPATH, '//*[contains(text(), "Show full description")]')
 
     driver.execute_script('arguments[0].scrollIntoView();', all_descriptions_buttons[-1])
     driver.execute_script('arguments[0].click();', all_descriptions_buttons[-1])
@@ -104,7 +106,7 @@ def get_job_posting_link(job_title):
             full_description.remove(web_element_buttons)
 
     for description in full_description:
-        if all(word in description.text.lower() for word in ['python']):
+        if any(word in description.text.lower() for word in ['python']):
             for button, href in zip(job_link_buttons, job_link_hrefs):
                 if 'linkedin' in button.text.lower():
                     continue
