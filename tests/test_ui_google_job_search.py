@@ -1,41 +1,35 @@
-import os
 import time
 import re
 import pytest
 import selenium.common
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options as ChromeOptions
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
-from webdriver_manager.chrome import ChromeDriverManager
-import send_sms
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.common.exceptions import ElementNotVisibleException
 from selenium.webdriver.support.events import EventFiringWebDriver
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from utils.logger import EventListener
 
 JOB_LIST = []
-LANGUAGES = []
 
-# Search terms to remember (100+ entries in general roles) - check for python when searching
+# Search terms in general
 sdet = 'software+development+engineer+in+test+jobs'
 senior_automation_tester = 'senior+automation+tester+jobs'
 senior_test_automation_engineer = 'senior+test+automation+engineer+jobs'
 automation_tester = 'automation+tester+jobs'
 test_automation_engineer = 'test+automation_engineer+jobs'
 qa_automation_engineer = 'qa+automation_engineer+jobs'
+lead_qa_automation_engineer = 'lead+qa+automation_engineer+jobs'
+lead_automation_engineer = 'lead+automation_engineer+jobs'
 senior_qa_engineer = 'senior+qa+engineer+jobs'
 qa_engineer = 'qa+engineer+jobs'
 qa_data_test_engineer = 'qa+data_test+engineer'
 
 
+# Remote first job search terms
 remote_test_automation_engineer = 'test+automation_engineer+remote+first+jobs'
 remote_senior_qa_engineer = 'senior+qa+engineer+remote+first+jobs'
 remote_sdet = 'software+development+engineer+in+test+remote+first+jobs'
 
+# Contract Jobs
 automation_tester_contract = 'automation+tester+contract'
 test_automation_engineer_contract = 'test+automation_engineer+contract+jobs'
 sdet_contract = 'software+development+engineer+in+test+contract+jobs'
@@ -43,12 +37,14 @@ senior_qa_engineer_contract = 'senior+qa engineer+contract+jobs'
 qa_engineer_contract = 'qa+engineer+contract+jobs'
 test_engineer_contract = 'test+engineer+contract+jobs'
 system_tester_contract = 'system_tester_contract_jobs'
-search_terms = ['python', 'remote']
+
+# Search terms for job description
+search_terms = ['python']
 # avoid_terms = []
 avoid_terms = ['on-site', 'onsite', 'offices', 'office', 'hybrid']
 
 
-@pytest.fixture(params=[senior_qa_engineer, test_automation_engineer])
+@pytest.fixture(params=[remote_test_automation_engineer, remote_senior_qa_engineer, remote_sdet])
 def job_search_terms(request):
     return request.param
 
@@ -131,7 +127,6 @@ def get_job_posting_link(job_title):
 
 
 def test_ui_google_job_search(job_search_terms):
-    # TODO 1. Put on github when done
 
     # Search term entered for google search
     job_count = open_google_job_listings(job_search_terms)
