@@ -62,6 +62,7 @@ def setup(job_search_terms):
 
 
 def get_all_google_job_listing_names(job_count):
+    # Scroll through list of jobs on google for jobs
     if isinstance(job_count, int):
         while True:
             job_listings = driver.find_elements(By.XPATH, '//div[@class="BjJfJf PUpOsf"]')
@@ -75,7 +76,8 @@ def get_all_google_job_listing_names(job_count):
         return job_listings
 
 
-def open_google_job_listings(job_search):
+def open_google_job_listings():
+    # Go to google for jobs and get number of jobs found
     try:
         driver.find_element(By.XPATH, '//div[text()="Reject all"]').click()
     except selenium.common.NoSuchElementException:
@@ -93,6 +95,7 @@ def open_google_job_listings(job_search):
 
 
 def expand_full_descriptions():
+    # Open full job descriptions
     all_descriptions_buttons = driver.find_elements(By.XPATH, '//*[contains(text(), "Show full description")]')
 
     driver.execute_script('arguments[0].scrollIntoView();', all_descriptions_buttons[-1])
@@ -100,6 +103,7 @@ def expand_full_descriptions():
 
 
 def get_job_posting_link(job_title):
+    # Get link to relevant job postings
     job_link_buttons = driver.find_elements(By.XPATH,
                                             '//div[@class="whazf bD1FPe"]/descendant::div[@class="iSJ1kb va9cAf"]')
     job_link_hrefs = driver.find_elements(By.XPATH,
