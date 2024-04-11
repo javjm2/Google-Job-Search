@@ -133,7 +133,7 @@ def get_job_posting_link(job_title):
 def test_ui_google_job_search(job_search_terms):
 
     # Search term entered for google search
-    job_count = open_google_job_listings(job_search_terms)
+    job_count = open_google_job_listings()
     job_listings = get_all_google_job_listing_names(job_count)
     driver.execute_script('arguments[0].scrollIntoView();', job_listings[0])
     for job_title in job_listings:
