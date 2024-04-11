@@ -11,40 +11,40 @@ from utils.logger import EventListener
 JOB_LIST = []
 
 # Search terms in general
-sdet = 'software+development+engineer+in+test+jobs'
-senior_automation_tester = 'senior+automation+tester+jobs'
-senior_test_automation_engineer = 'senior+test+automation+engineer+jobs'
-automation_tester = 'automation+tester+jobs'
-test_automation_engineer = 'test+automation_engineer+jobs'
-qa_automation_engineer = 'qa+automation_engineer+jobs'
-lead_qa_automation_engineer = 'lead+qa+automation_engineer+jobs'
-lead_automation_engineer = 'lead+automation_engineer+jobs'
-senior_qa_engineer = 'senior+qa+engineer+jobs'
-qa_engineer = 'qa+engineer+jobs'
-qa_data_test_engineer = 'qa+data_test+engineer'
+SDET = 'software+development+engineer+in+test+jobs'
+SENIOR_AUTOMATION_TESTER = 'senior+automation+tester+jobs'
+SENIOR_TEST_AUTOMATION_ENGINEER = 'senior+test+automation+engineer+jobs'
+AUTOMATION_TESTER = 'automation+tester+jobs'
+TESTER_AUTOMATION_ENGINEER = 'test+automation_engineer+jobs'
+QA_AUTOMATION_ENGINEER = 'qa+automation_engineer+jobs'
+LEAD_QA_AUTOMATION_ENGINEER = 'lead+qa+automation_engineer+jobs'
+LEAD_AUTOMATION_ENGINEER = 'lead+automation_engineer+jobs'
+SENIOR_QA_ENGINEER = 'senior+qa+engineer+jobs'
+QA_ENGINEER = 'qa+engineer+jobs'
+QA_DATA_TEST_ENGINEER = 'qa+data_test+engineer'
 
 
 # Remote first job search terms
-remote_test_automation_engineer = 'test+automation_engineer+remote+first+jobs'
-remote_senior_qa_engineer = 'senior+qa+engineer+remote+first+jobs'
-remote_sdet = 'software+development+engineer+in+test+remote+first+jobs'
+REMOTE_TEST_AUTOMATION_ENGINEER = 'test+automation_engineer+remote+first+jobs'
+REMOTE_SENIOR_QA_ENGINEER = 'senior+qa+engineer+remote+first+jobs'
+REMOTE_SDET = 'software+development+engineer+in+test+remote+first+jobs'
 
 # Contract Jobs
-automation_tester_contract = 'automation+tester+contract'
-test_automation_engineer_contract = 'test+automation_engineer+contract+jobs'
-sdet_contract = 'software+development+engineer+in+test+contract+jobs'
-senior_qa_engineer_contract = 'senior+qa engineer+contract+jobs'
-qa_engineer_contract = 'qa+engineer+contract+jobs'
-test_engineer_contract = 'test+engineer+contract+jobs'
-system_tester_contract = 'system_tester_contract_jobs'
+AUTOMATION_TESTER_CONTRACT = 'automation+tester+contract'
+TEST_AUTOMATION_ENGINEER_CONTRACT = 'test+automation_engineer+contract+jobs'
+SDET_CONTRACT = 'software+development+engineer+in+test+contract+jobs'
+SENIOR_QA_ENGINEER_CONTRACT = 'senior+qa engineer+contract+jobs'
+QA_ENGINEER_CONTRACT = 'qa+engineer+contract+jobs'
+TEST_ENGINEER_CONTRACT = 'test+engineer+contract+jobs'
+SYSTEM_TESTER_CONTRACT = 'system_tester_contract_jobs'
 
 # Search terms for job description
-search_terms = ['python']
+SEARCH_TERMS = ['python']
 # avoid_terms = []
-avoid_terms = ['on-site', 'onsite', 'offices', 'office', 'hybrid']
+AVOID_TERMS = ['on-site', 'onsite', 'offices', 'office', 'hybrid']
 
 
-@pytest.fixture(params=[remote_test_automation_engineer, remote_senior_qa_engineer, remote_sdet])
+@pytest.fixture(params=[REMOTE_TEST_AUTOMATION_ENGINEER, REMOTE_SENIOR_QA_ENGINEER, REMOTE_SDET])
 def job_search_terms(request):
     return request.param
 
@@ -112,10 +112,10 @@ def get_job_posting_link(job_title):
             full_description.remove(web_element_buttons)
 
     for description in full_description:
-        if any(word in description.text.lower() for word in avoid_terms):
+        if any(word in description.text.lower() for word in AVOID_TERMS):
             continue
 
-        elif all(word in description.text.lower() for word in search_terms):
+        elif all(word in description.text.lower() for word in SEARCH_TERMS):
             for button, href in zip(job_link_buttons, job_link_hrefs):
                 if 'linkedin' in button.text.lower() or 'app.otta' in button.text.lower():
                     continue
