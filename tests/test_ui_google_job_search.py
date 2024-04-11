@@ -40,8 +40,8 @@ SYSTEM_TESTER_CONTRACT = 'system_tester_contract_jobs'
 
 # Search terms for job description
 SEARCH_TERMS = ['python']
-# avoid_terms = []
-AVOID_TERMS = ['on-site', 'onsite', 'offices', 'office', 'hybrid']
+AVOID_TERMS = []
+# AVOID_TERMS = ['on-site', 'onsite', 'offices', 'office', 'hybrid']
 
 
 @pytest.fixture(params=[REMOTE_TEST_AUTOMATION_ENGINEER, REMOTE_SENIOR_QA_ENGINEER, REMOTE_SDET])
