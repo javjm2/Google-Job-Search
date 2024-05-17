@@ -8,49 +8,54 @@ from selenium.webdriver.support.events import EventFiringWebDriver
 from webdriver_manager.microsoft import EdgeChromiumDriverManager
 from utils.logger import EventListener
 
-JOB_LIST = []
-
 # Search terms in general
 SDET = 'software+development+engineer+in+test+jobs'
 SENIOR_AUTOMATION_TESTER = 'senior+automation+tester+jobs'
 SENIOR_TEST_AUTOMATION_ENGINEER = 'senior+test+automation+engineer+jobs'
 AUTOMATION_TESTER = 'automation+tester+jobs'
-TESTER_AUTOMATION_ENGINEER = 'test+automation_engineer+jobs'
-QA_AUTOMATION_ENGINEER = 'qa+automation_engineer+jobs'
-LEAD_QA_AUTOMATION_ENGINEER = 'lead+qa+automation_engineer+jobs'
-LEAD_AUTOMATION_ENGINEER = 'lead+automation_engineer+jobs'
+TEST_AUTOMATION_ENGINEER = 'test+automation+engineer+jobs'
+QA_AUTOMATION_ENGINEER = 'qa+automation+engineer+jobs'
+LEAD_QA_AUTOMATION_ENGINEER = 'lead+qa+automation+engineer+jobs'
+LEAD_SDET = 'lead+sdet+jobs'
+LEAD_AUTOMATION_ENGINEER = 'test+automation+lead+jobs'
 SENIOR_QA_ENGINEER = 'senior+qa+engineer+jobs'
+SENIOR_TEST_ENGINEER = 'senior+test+engineer+jobs'
 QA_ENGINEER = 'qa+engineer+jobs'
-QA_DATA_TEST_ENGINEER = 'qa+data_test+engineer'
-
+MOBILE_QA_ENGINEER = 'mobile+qa+engineer+jobs'
+QA_DATA_TEST_ENGINEER = 'qa+data+test+engineer+jobs'
+PYTHON_AUTOMATION = 'python+automation+engineer+jobs'
+SOFTWARE_AUTOMATION = 'software+automation+engineer+jobs'
+PYTHON_DEV = 'python+engineer'
+TEST_DEVOPS = 'devops+engineer+in+test+jobs'
 
 # Remote first job search terms
-REMOTE_TEST_AUTOMATION_ENGINEER = 'test+automation_engineer+remote+first+jobs'
-REMOTE_SENIOR_QA_ENGINEER = 'senior+qa+engineer+remote+first+jobs'
+REMOTE_TEST_AUTOMATION_ENGINEER = 'test+automation+engineer+remote+jobs'
+REMOTE_QA_ENGINEER = 'qa+engineer+remote+first+jobs'
 REMOTE_SDET = 'software+development+engineer+in+test+remote+first+jobs'
 
 # Contract Jobs
 AUTOMATION_TESTER_CONTRACT = 'automation+tester+contract'
 TEST_AUTOMATION_ENGINEER_CONTRACT = 'test+automation_engineer+contract+jobs'
 SDET_CONTRACT = 'software+development+engineer+in+test+contract+jobs'
-SENIOR_QA_ENGINEER_CONTRACT = 'senior+qa engineer+contract+jobs'
+SENIOR_QA_ENGINEER_CONTRACT = 'senior+qa+engineer+contract+jobs'
 QA_ENGINEER_CONTRACT = 'qa+engineer+contract+jobs'
 TEST_ENGINEER_CONTRACT = 'test+engineer+contract+jobs'
-SYSTEM_TESTER_CONTRACT = 'system_tester_contract_jobs'
+SYSTEM_TESTER_CONTRACT = 'system+tester+contract+jobs'
 
 # Search terms for job description
-SEARCH_TERMS = ['python']
-AVOID_TERMS = []
-# AVOID_TERMS = ['on-site', 'onsite', 'offices', 'office', 'hybrid']
+SEARCH_TERMS = ['remote', 'python']
+JOB_LIST = []
+AVOID_TERMS = ['hybrid', 'office', 'offices']
 
 
-@pytest.fixture(params=[REMOTE_TEST_AUTOMATION_ENGINEER, REMOTE_SENIOR_QA_ENGINEER, REMOTE_SDET])
+
+@pytest.fixture(params=[TEST_DEVOPS])
 def job_search_terms(request):
     return request.param
 
 
 @pytest.fixture(autouse=True)
-def setup(job_search_terms):
+def setup(job_search_terms, request):
     global driver
     driver = EventFiringWebDriver(webdriver.Edge(EdgeChromiumDriverManager().install()),
                                   EventListener())
@@ -76,10 +81,13 @@ def get_all_google_job_listing_names(job_count):
         return job_listings
 
 
-def open_google_job_listings():
+def open_google_job_listings(job_search_terms):
     # Go to google for jobs and get number of jobs found
     try:
         driver.find_element(By.XPATH, '//div[text()="Reject all"]').click()
+        time.sleep(1)
+        # search_field = driver.find_element(By.NAME, 'q')
+        # search_field.send_keys(job_search_terms.replace("+", " "))
     except selenium.common.NoSuchElementException:
         pass
 
@@ -116,12 +124,12 @@ def get_job_posting_link(job_title):
             full_description.remove(web_element_buttons)
 
     for description in full_description:
-        if any(word in description.text.lower() for word in AVOID_TERMS):
-            continue
 
-        elif all(word in description.text.lower() for word in SEARCH_TERMS):
+        if all(word in description.text.lower() for word in SEARCH_TERMS) and not any(word in description.text.lower() for word in AVOID_TERMS):
+
+            # Skip clicking certain job posting links
             for button, href in zip(job_link_buttons, job_link_hrefs):
-                if 'linkedin' in button.text.lower() or 'app.otta' in button.text.lower():
+                if any(word in button.text.lower() for word in ['linkedin', 'app.otta', 'sercanto']):
                     continue
                 else:
                     job_posting_url = href.get_attribute('href')
@@ -131,13 +139,12 @@ def get_job_posting_link(job_title):
 
 
 def test_ui_google_job_search(job_search_terms):
-
     # Search term entered for google search
-    job_count = open_google_job_listings()
+    job_count = open_google_job_listings(job_search_terms)
     job_listings = get_all_google_job_listing_names(job_count)
     driver.execute_script('arguments[0].scrollIntoView();', job_listings[0])
     for job_title in job_listings:
-        if any(word in job_title.text.lower() for word in ['qa', 'test', 'tester', 'automation', 'python']):
+        if any(word in job_title.text.lower() for word in ['engineer', 'automation', 'python', 'developer', 'qa', 'test', 'sdet', 'development']):
             driver.execute_script('arguments[0].scrollIntoView();', job_title)
             driver.execute_script('arguments[0].click();', job_title)
             expand_full_descriptions()
